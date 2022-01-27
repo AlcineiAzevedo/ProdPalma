@@ -1,0 +1,28 @@
+coord_crop=function(seg,plot=TRUE,n1=3,n2=2){
+  MPred2a=seg
+Mpred3=matrix(rep(rowSums(MPred2a==1),ncol(MPred2a)),ncol=ncol(MPred2a))*matrix(rep(colSums(MPred2a==1),each=nrow(MPred2a)),ncol=ncol(MPred2a))
+if(plot==TRUE) {plot_image(Mpred3/max(Mpred3))}
+
+
+
+xx=1
+Mpred3=matrix(rep(rowSums(MPred2a==1)>(mean(rowSums(MPred2a==1))*xx),ncol(MPred2a)),ncol=ncol(MPred2a))&
+  matrix(rep(colSums(MPred2a==1)>(mean(colSums(MPred2a==1))*xx),each=nrow(MPred2a)),ncol=ncol(MPred2a))
+xx=0.5
+MPred2a=Mpred3
+Mpred3=matrix(rep(rowSums(MPred2a==1)>(mean(rowSums(MPred2a==1))*xx),ncol(MPred2a)),ncol=ncol(MPred2a))&
+  matrix(rep(colSums(MPred2a==1)>(mean(colSums(MPred2a==1))*xx),each=nrow(MPred2a)),ncol=ncol(MPred2a))
+
+
+display(Mpred3)
+MPred2a=Mpred3==0
+x=(1:nrow(MPred2a))*(rowSums(MPred2a==0)>(round(nrow(MPred2a)/n1,0)))
+x1=min(x[x!=0])
+x2=max(x)
+
+y=(1:ncol(MPred2a))*(colSums(MPred2a==0)>(round(ncol(MPred2a)/n2,0)))
+y1=min(y[y!=0])
+y2=max(y)
+
+return(list(x1=x1,x2=x2,y1=y1,y2=y2))
+}
